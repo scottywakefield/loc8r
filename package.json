@@ -3,10 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install",
     "start": "node ./bin/www"
+  },
+  "engines": {
+    "node": "~4.4.7",
+    "npm": "~3.10.5"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
+    "bower": "^1.7.9",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.13.4",
