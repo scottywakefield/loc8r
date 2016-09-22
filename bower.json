@@ -1,0 +1,24 @@
+{
+  "name": "loc8r",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Scott Wakefield <scott.wakefield@advancedcomputersoftware.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "node"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
