@@ -8,7 +8,7 @@ var aboutController = require('../controllers/about');
 /* GET home page. */
 router.get('/', indexController.index);
 router.get('/location', locationController.location);
-router.get('/location/review/add', reviewController.add);
+router.get('/location/review/new', reviewController.add);
 router.get('/about', aboutController.about);
 
 module.exports = router;
