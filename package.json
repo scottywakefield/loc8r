@@ -1,6 +1,6 @@
 {
   "name": "loc8r",
-  "version": "5.5.3",
+  "version": "6.4.0",
   "private": true,
   "scripts": {
     "postinstall": "bower install",
