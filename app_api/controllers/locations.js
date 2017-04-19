@@ -63,7 +63,21 @@ module.exports.listByDistance = function (req, res) {
 };
 
 module.exports.add = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+    console.log(req.body);
+    console.log(req.body.name);
+    Location.create({
+        name: req.body.name,
+        address: req.body.address,
+        facilities: req.body.facilities.split(","),
+        coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
+        openingTimes: req.body.openingTimes
+    }, function (err, location) {
+        if (err) {
+            sendJsonResponse(res, 400, err);
+        } else {
+            sendJsonResponse(res, 201, location);
+        }
+    });
 };
 
 module.exports.get = function (req, res) {
