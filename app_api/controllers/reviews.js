@@ -174,10 +174,48 @@ module.exports.update = function (req, res) {
 
                 updateAverageRating(location._id);
                 sendJsonResponse(res, 200, thisReview);
-            })
+            });
         });
 };
 
 module.exports.delete = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+    if (!(req.params && req.params.locationId && req.params.reviewId)) {
+        sendJsonResponse(res, 404, {"message": "Not found, locationId and reviewId are both required"});
+        return;
+    }
+
+    Location
+        .findById(req.params.locationId)
+        .select("reviews")
+        .exec(function (err, location) {
+            if (err) {
+                sendJsonResponse(res, 400, err);
+                return;
+            } else if (!location) {
+                sendJsonResponse(res, 404, {"message": "No location found for that location Id"});
+                return;
+            } else if (!(location.reviews && location.reviews.length > 0)) {
+                sendJsonResponse(res, 404, {"message": "No reviews found for that location"});
+                return;
+            }
+
+            var thisReview = location.reviews.id(req.params.reviewId);
+
+            if (!thisReview) {
+                sendJsonResponse(res, 404, {"message": "No review found for that review Id"});
+                return;
+            }
+
+            thisReview.remove();
+
+            location.save(function (err, location) {
+                if (err) {
+                    sendJsonResponse(res, 400, err);
+                    return;
+                }
+
+                updateAverageRating(location._id);
+                sendJsonResponse(res, 204, null);
+            });
+        });
 };
