@@ -1,5 +1,12 @@
 /* GET 'location info' page */
 var request = require("request");
+var apiOptions = {
+    server: "http://localhost:3000"
+};
+
+if (process.env.NODE_ENV === "production") {
+    apiOptions.server = "https://sw-loc8r.herokuapp.com/"
+}
 
 module.exports.location = function (req, res) {
     res.render('location', {
