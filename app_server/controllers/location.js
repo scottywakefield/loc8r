@@ -1,4 +1,6 @@
 /* GET 'location info' page */
+var request = require("request");
+
 module.exports.location = function (req, res) {
     res.render('location', {
         title:'Scotto\'s Mobos',
