@@ -104,7 +104,38 @@ module.exports.get = function (req, res) {
 };
 
 module.exports.update = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+    if (!(req.params && req.params.locationId)) {
+        sendJsonResponse(res, 404, {"message": "No locationId in request"});
+        return;
+    }
+
+    Location
+        .findById(req.params.locationId)
+        .select("-reviews -rating")
+        .exec(function (err, location) {
+            if (!location) {
+                sendJsonResponse(res, 404, {"message": "location not found"});
+                return;
+            } else if (err) {
+                sendJsonResponse(res, 400, err);
+                return;
+            }
+
+            location.name = req.body.name;
+            location.address = req.body.address;
+            facilities = req.body.facilities.split(",");
+            coords = [parseFloat(req.body.lng), parseFloat(req.body.lat)];
+            openingTimes = req.body.openingTimes;
+
+            location.save(function (err, location) {
+                if (err) {
+                    sendJsonResponse(res, 400, err);
+                    return;
+                }
+
+                sendJsonResponse(res, 200, location);
+            });
+        });
 };
 
 module.exports.delete = function (req, res) {
