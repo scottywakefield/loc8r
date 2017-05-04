@@ -67,7 +67,7 @@ var setAverageRating = function (location) {
             }
 
             console.log("Average rating updated to: " + ratingAverage);
-        })
+        });
 };
 
 module.exports.add = function (req, res) {
