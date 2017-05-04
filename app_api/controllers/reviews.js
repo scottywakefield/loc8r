@@ -71,15 +71,13 @@ var setAverageRating = function (location) {
 };
 
 module.exports.add = function (req, res) {
-    var locationId = req.params.locationId;
-
-    if (!locationId) {
+    if (!(req.params && req.params.locationId)) {
         sendJsonResponse(res, 404, {"message": "Not found, locationId required"});
         return;
     }
 
     Location
-        .findById(locationId)
+        .findById(req.params.locationId)
         .select("reviews")
         .exec(function (err, location) {
             if (err) {
@@ -137,7 +135,47 @@ module.exports.get = function (req, res) {
 };
 
 module.exports.update = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+    if (!(req.params && req.params.locationId && req.params.reviewId)) {
+        sendJsonResponse(res, 404, {"message": "Not found, locationId and reviewId are both required"});
+        return;
+    }
+
+    Location
+        .findById(locationId)
+        .select("reviews")
+        .exec(function (err, location) {
+            if (err) {
+                sendJsonResponse(res, 400, err);
+                return;
+            } else if (!location) {
+                sendJsonResponse(res, 404, {"message": "No location found for that location Id"});
+                return;
+            } else if (!(location.reviews && location.reviews.length > 0)) {
+                sendJsonResponse(res, 404, {"message": "No reviews found for that location"});
+                return;
+            }
+
+            var thisReview = location.reviews.id(req.params.reviewId);
+
+            if (!thisReview) {
+                sendJsonResponse(res, 404, {"message": "No review found for that review Id"});
+                return;
+            }
+
+            thisReview.author = req.body.author;
+            thisReview.rating = req.body.rating;
+            thisReview.reviewText = req.body.reviewText;
+
+            location.save(function (err, location) {
+                if (err) {
+                    sendJsonResponse(res, 400, err);
+                    return;
+                }
+
+                updateAverageRating(location._id);
+                sendJsonResponse(res, 200, thisReview);
+            })
+        });
 };
 
 module.exports.delete = function (req, res) {
