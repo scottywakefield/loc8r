@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === "production") {
     apiOptions.server = "https://sw-loc8r.herokuapp.com/"
 }
 
-module.exports.location = function (req, res) {
+var renderLocations = function (req, res) {
     res.render('location', {
         title:'Scotto\'s Mobos',
         pageHeader: {title: 'Scotto\'s Mobos'},
@@ -49,4 +49,8 @@ module.exports.location = function (req, res) {
             }]
         }
     });
+};
+
+module.exports.location = function (req, res) {
+    renderLocations(req, res);
 };
