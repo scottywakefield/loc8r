@@ -5,7 +5,7 @@ var apiOptions = {
 };
 
 if (process.env.NODE_ENV === "production") {
-    apiOptions.server = "https://sw-loc8r.herokuapp.com/"
+    apiOptions.server = "https://sw-loc8r.herokuapp.com"
 }
 
 var renderLocations = function (req, res) {
@@ -52,5 +52,19 @@ var renderLocations = function (req, res) {
 };
 
 module.exports.location = function (req, res) {
-    renderLocations(req, res);
+    var path = "/api/locations",
+        requestOptions = {
+        url: apiOptions.server + path,
+            method: "GET",
+            json: {},
+            qs: {
+                lng: -0.7992599,
+                lat: 51.378091,
+                maxDistance: 20
+            }
+        };
+
+    request(requestOptions, function (err, response, body) {
+        renderLocations(req, res);
+    });
 };
