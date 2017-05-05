@@ -1,14 +1,6 @@
 /* GET 'location info' page */
-var request = require("request");
-var apiOptions = {
-    server: "http://localhost:3000"
-};
 
-if (process.env.NODE_ENV === "production") {
-    apiOptions.server = "https://sw-loc8r.herokuapp.com"
-}
-
-var renderLocations = function (req, res) {
+module.exports.location = function (req, res) {
     res.render('location', {
         title:'Scotto\'s Mobos',
         pageHeader: {title: 'Scotto\'s Mobos'},
@@ -48,23 +40,5 @@ var renderLocations = function (req, res) {
                 reviewText: 'Some crazy stuff went down because some guy had too much sugar'
             }]
         }
-    });
-};
-
-module.exports.location = function (req, res) {
-    var path = "/api/locations",
-        requestOptions = {
-        url: apiOptions.server + path,
-            method: "GET",
-            json: {},
-            qs: {
-                lng: -0.7992599,
-                lat: 51.378091,
-                maxDistance: 20
-            }
-        };
-
-    request(requestOptions, function (err, response, body) {
-        renderLocations(req, res);
     });
 };
