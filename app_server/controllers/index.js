@@ -29,9 +29,9 @@ module.exports.index = function(req, res){
             method: "GET",
             json: {},
             qs: {
-                lng: -0.7992599,
-                lat: 51.378091,
-                maxDistance: 20000000000
+                lng: -0.967,
+                lat: 51.454,
+                maxDistance: 20000000
             }
         };
 
