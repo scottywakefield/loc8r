@@ -9,6 +9,18 @@ if (process.env.NODE_ENV === "production") {
     apiOptions.server = "https://sw-loc8r.herokuapp.com"
 }
 
+var formatDistance = function (distance) {
+    var numDistance, unit;
+    if (distance > 1) {
+        numDistance = parseFloat(distance).toFixed(1);
+        unit = ' km';
+    } else {
+        numDistance = parseInt(distance * 1000, 10);
+        unit = ' m';
+    }
+    return numDistance + unit;
+};
+
 var renderLocations = function (req, res, responseBody) {
     res.render('index', {
         title: 'Loc8r - find a place to work with wifi',
@@ -29,13 +41,18 @@ module.exports.index = function(req, res){
             method: "GET",
             json: {},
             qs: {
-                lng: -0.967,
-                lat: 51.454,
-                maxDistance: 20000000
+                lng: -0.9631,
+                lat: 51.45,
+                maxDistance: 5
             }
         };
 
     request(requestOptions, function (err, response, body) {
-        renderLocations(req, res, body);
+        var i, data;
+        data = body;
+        for (i=0; i<data.length; i++) {
+            data[i].distance = formatDistance(data[i].distance);
+        }
+        renderLocations(req, res, data);
     });
 };

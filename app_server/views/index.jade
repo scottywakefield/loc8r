@@ -23,6 +23,8 @@ block content
               each facility in location.facilities
                 span.label.label-warning= facility
                 | &nbsp;
+        if locations.length === 0
+          p.lead No wifi spots loc8d nearby.. walkies time.
 
     .col-xs-12.col-sm-4
       p.lead= sidebar

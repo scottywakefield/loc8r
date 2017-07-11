@@ -29,7 +29,7 @@ module.exports.listByDistance = function (req, res) {
     var geoOptions = {
         spherical: true,
         num: 10,
-        maxDistance: theEarth.getRadsFromDistance(req.query.maxDistance || 100000)
+        maxDistance: (req.query.maxDistance || 10)*1000 // unit is metres
     };
 
     if (!lng || !lat) {
@@ -49,7 +49,7 @@ module.exports.listByDistance = function (req, res) {
 
         results.forEach(function (result) {
             locations.push({
-                distance: theEarth.getDistanceFromRads(result.dis),
+                distance: result.dis / 1000, // unit is metres
                 name: result.obj.name,
                 address: result.obj.address,
                 rating: result.obj.rating,
