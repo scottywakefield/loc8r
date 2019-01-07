@@ -10,6 +10,11 @@ if (process.env.NODE_ENV === "production") {
 }
 
 var formatDistance = function (distance) {
+    if (isNaN(distance)) {
+        console.log('distance NaN');
+        return 'NaN';
+    }
+
     var numDistance, unit;
     if (distance > 1) {
         numDistance = parseFloat(distance).toFixed(1);
@@ -43,7 +48,7 @@ module.exports.index = function(req, res){
             qs: {
                 lng: -0.9631,
                 lat: 51.45,
-                maxDistance: 5
+                maxDistance: 500
             }
         };
 
